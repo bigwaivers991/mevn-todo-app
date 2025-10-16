@@ -1,4 +1,4 @@
-upon cloning the app.
+<img width="946" height="220" alt="image" src="https://github.com/user-attachments/assets/24ae9351-571c-4711-bb75-ac8a93b84d39" />upon cloning the app.
 Follow these steps on your terminal
 
 Type **cd backend** -
@@ -6,8 +6,9 @@ Type **cd backend** -
 **npm run dev**
 
 Open new terminal.
-**cd backend**
+**cd frontend**
 **npm install**
 **npm run dev**
 
-then do the same thing as you did in the backend
+open localhost link, which should look like:
+<img width="287" height="99" alt="image" src="https://github.com/user-attachments/assets/87381518-b986-4f51-8637-91ed5388eba8" />
