@@ -1,5 +1,5 @@
-Upon cloning the app.
-Follow these steps on your terminal
+
+Follow these steps
 
 Type **cd backend** -
 **npm install** -
