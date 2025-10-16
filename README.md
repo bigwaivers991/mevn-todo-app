@@ -1,4 +1,4 @@
-upon cloning the app.
+Upon cloning the app.
 Follow these steps on your terminal
 
 Type **cd backend** -
