@@ -1,4 +1,4 @@
-<img width="946" height="220" alt="image" src="https://github.com/user-attachments/assets/24ae9351-571c-4711-bb75-ac8a93b84d39" />upon cloning the app.
+upon cloning the app.
 Follow these steps on your terminal
 
 Type **cd backend** -
