@@ -5,9 +5,9 @@ Type **cd backend** -
 **npm install** -
 **npm run dev**
 
-Open new terminal.
-**cd frontend**
-**npm install**
+Open new terminal. Follow same steps as backend
+**cd frontend** -
+**npm install** -
 **npm run dev**
 
 open localhost link, which should look like: <br>
