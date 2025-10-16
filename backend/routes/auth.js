@@ -138,4 +138,40 @@ router.get('/me', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Update username
+router.put('/:id/username', async (req, res) => {
+  try {
+    const { username } = req.body;
+    const { id } = req.params;
+
+    if (!username) {
+      return res.status(400).json({ message: 'Username is required' });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { username },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user: updatedUser });
+  } catch (err) {
+    console.error('Update username error:', err.message);
+    res.status(500).json({ message: 'Failed to update username' });
+  }
+});
 module.exports = router;
