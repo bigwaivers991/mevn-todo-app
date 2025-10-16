@@ -1,0 +1,25 @@
+/* Basic custom CSS and font fallback */
+:root {
+  --primary-500: #0ea5a4; /* teal */
+  --accent-600: #f97316; /* orange */
+  --muted: #6b7280;
+}
+
+body { font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+
+/* small utility */
+.line-through { text-decoration: line-through; }
+
+/* gradient used across header/footer */
+.gradient-bg {
+  background: linear-gradient(135deg, #38b2ac 0%, #ed8936 100%);
+}
+
+/* primary button */
+.btn-primary {
+  background: var(--primary-500);
+  color: white;
+}
+.btn-outline {
+  border: 1px solid rgba(255,255,255,0.2);
+}
