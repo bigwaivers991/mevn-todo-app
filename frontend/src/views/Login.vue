@@ -19,6 +19,7 @@
   </div>
 </template>
 
+<!-- In Login.vue, change the redirect from tasks to trips -->
 <script>
 import { login } from '../services/auth';
 
@@ -29,13 +30,25 @@ export default {
   methods: {
     async submit() {
       try {
-        await login({ emailOrUsername: this.form.emailOrUsername, password: this.form.password });
-        // notify parent to reload user
-        this.$root?.$emit?.('user-updated');
-        this.$router.push('/tasks');
-        // try to call parent event so App reloads user (we also emit)
+        const response = await login({ 
+          emailOrUsername: this.form.emailOrUsername, 
+          password: this.form.password 
+        });
+        
+        console.log('Login successful:', response);
+        
+        // Force reload the user data in App.vue
+        if (this.$root && this.$root.loadUser) {
+          await this.$root.loadUser();
+        }
+        
+        // Emit event for parent components
         this.$emit('user-updated');
+        
+        // Redirect to trips page
+        this.$router.push('/trips');
       } catch (err) {
+        console.error('Login error:', err);
         alert(err?.response?.data?.message || 'Login failed');
       }
     }

@@ -1,36 +1,55 @@
+// backend/routes/auth.js
 const express = require('express');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
 const router = express.Router();
 
-const COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
-  maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-};
-
-// Register new user
+// Register
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    if (!username || !email || !password) return res.status(400).json({ message: 'Missing fields' });
+    
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
-    const exists = await User.findOne({ $or: [{ username }, { email }] });
-    if (exists) return res.status(400).json({ message: 'User already exists' });
-
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashed });
-
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-    res.cookie('token', token, COOKIE_OPTIONS).status(201).json({
-      user: { id: user._id, username: user.username, email: user.email, createdAt: user.createdAt }
+    // Check if user already exists
+    const existingUser = await User.findOne({ 
+      $or: [{ email }, { username }] 
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    
+    if (existingUser) {
+      return res.status(400).json({ 
+        message: 'User with this email or username already exists' 
+      });
+    }
+
+    // Create new user
+    const user = new User({ username, email, password });
+    await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, username: user.username, email: user.email }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    res.status(201).json({
+      message: 'User created successfully',
+      user: { id: user._id, username: user.username, email: user.email }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Error creating user' });
   }
 });
 
@@ -38,40 +57,84 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { emailOrUsername, password } = req.body;
-    if (!emailOrUsername || !password) return res.status(400).json({ message: 'Missing fields' });
 
-    const user = await User.findOne({ $or: [{ email: emailOrUsername }, { username: emailOrUsername }] });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!emailOrUsername || !password) {
+      return res.status(400).json({ message: 'Email/username and password are required' });
+    }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: 'Invalid credentials' });
-
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-    res.cookie('token', token, COOKIE_OPTIONS).json({
-      user: { id: user._id, username: user.username, email: user.email, createdAt: user.createdAt }
+    // Find user by email or username
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }]
     });
-  } catch {
-    res.status(500).json({ message: 'Server error' });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Check password
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, username: user.username, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    res.json({
+      message: 'Login successful',
+      user: { id: user._id, username: user.username, email: user.email }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Error during login' });
   }
 });
 
 // Logout
 router.post('/logout', (req, res) => {
-  res.clearCookie('token', COOKIE_OPTIONS);
-  res.json({ message: 'Logged out' });
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully' });
 });
 
 // Get current user
 router.get('/me', async (req, res) => {
   try {
     const token = req.cookies?.token;
-    if (!token) return res.json({ user: null });
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
 
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(payload.id).select('-password');
-    res.json({ user });
-  } catch {
-    res.json({ user: null });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    res.json({ 
+      user: { 
+        id: user._id, 
+        username: user.username, 
+        email: user.email, 
+        createdAt: user.createdAt 
+      }
+    });
+  } catch (error) {
+    res.clearCookie('token');
+    res.status(401).json({ message: 'Invalid or expired token' });
   }
 });
 

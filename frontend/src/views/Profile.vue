@@ -37,9 +37,12 @@ export default {
   methods: {
     async refresh() {
       try {
+        console.log('Profile: Fetching user data...');
         const res = await api.get('/api/auth/me');
+        console.log('Profile: User data received:', res.data);
         this.user = res.data.user;
       } catch (err) {
+        console.error('Profile: Error fetching user:', err);
         this.user = null;
       }
     }

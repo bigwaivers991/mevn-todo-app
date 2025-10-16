@@ -5,12 +5,12 @@
         <div class="bg-white bg-opacity-20 rounded-full w-10 h-10 flex items-center justify-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <router-link to="/" class="text-xl font-bold tracking-tight">TaskTamer</router-link>
+        <router-link to="/" class="text-xl font-bold tracking-tight">TripTrove</router-link>
       </div>
 
       <div class="hidden md:flex items-center space-x-4">
         <router-link to="/" class="px-3 py-2 rounded-md text-sm font-medium">Home</router-link>
-        <router-link to="/tasks" class="px-3 py-2 rounded-md text-sm font-medium">My Tasks</router-link>
+        <router-link to="/trips" class="px-3 py-2 rounded-md text-sm font-medium">My Trips</router-link>
         <router-link to="/profile" class="px-3 py-2 rounded-md text-sm font-medium">Profile</router-link>
         <router-link to="/contact" class="px-3 py-2 rounded-md text-sm font-medium">Contact</router-link>
       </div>

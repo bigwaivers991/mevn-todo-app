@@ -1,19 +1,19 @@
 <template>
   <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
     <div>
-      <h1 class="text-4xl font-bold mb-4">Organize your day with TaskTamer</h1>
-      <p class="text-gray-700 mb-6">A clean, minimal to-do experience with secure authentication and task management. Add, update, complete, and delete tasks — all synced to your account.</p>
+      <h1 class="text-4xl font-bold mb-4">Plan your next adventure with TripTrove</h1>
+      <p class="text-gray-700 mb-6">Your personal trip planner — track destinations, dates, budgets, and bookings all in one place.</p>
       <div class="flex space-x-3">
-        <router-link to="/register" class="px-6 py-3 rounded btn-primary">Get Started — Free</router-link>
-        <router-link to="/tasks" class="px-6 py-3 rounded border">View Tasks</router-link>
+        <router-link to="/register" class="px-6 py-3 rounded btn-primary">Start Planning</router-link>
+        <router-link to="/trips" class="px-6 py-3 rounded border">View Trips</router-link>
       </div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow">
-      <h3 class="font-semibold mb-3">Quick Tips</h3>
+      <h3 class="font-semibold mb-3">Travel Tips</h3>
       <ul class="text-sm text-gray-600 space-y-2">
-        <li>Use priorities to focus on top tasks.</li>
-        <li>Set due dates to plan your week.</li>
-        <li>Edit or delete tasks anytime.</li>
+        <li>Plan early to get better deals.</li>
+        <li>Track your travel budget.</li>
+        <li>Keep all trip details in one place.</li>
       </ul>
     </div>
   </div>

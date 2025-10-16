@@ -37,7 +37,7 @@ export default {
     async submit() {
       try {
         await register(this.form);
-        this.$router.push('/tasks');
+        this.$router.push('/login'); // CHANGED FROM /tasks TO /login
         this.$emit('user-updated');
       } catch (err) {
         alert(err?.response?.data?.message || 'Registration failed');

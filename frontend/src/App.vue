@@ -17,35 +17,50 @@ import NavBar from './components/NavBar.vue';
 import { me, logout } from './services/auth';
 
 export default {
+  name: 'App',
   components: { NavBar },
   data() {
-    return { user: null };
+    return { 
+      user: null,
+      loading: true
+    };
   },
   methods: {
     async loadUser() {
       try {
+        console.log('Loading user...');
         const res = await me();
         this.user = res.user || null;
+        console.log('User loaded:', this.user);
       } catch (err) {
+        console.error('Error loading user:', err);
         this.user = null;
+      } finally {
+        this.loading = false;
       }
     },
     async doLogout() {
       try {
         await logout();
       } catch (e) {
-        // ignore
+        console.error('Logout error:', e);
       }
       this.user = null;
       this.$router.push('/');
     }
   },
-  mounted() {
-    this.loadUser();
+  async mounted() {
+    // Make loadUser available to child components
+    this.$root.loadUser = this.loadUser;
+    
+    // Load user on app start
+    await this.loadUser();
+    
+    // Listen for user updates from child components
+    this.$root.$on('user-updated', this.loadUser);
+  },
+  beforeUnmount() {
+    this.$root.$off('user-updated', this.loadUser);
   }
 }
 </script>
-
-<style scoped>
-/* small scoped tweaks */
-</style>
