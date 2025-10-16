@@ -1,12 +1,12 @@
 
-Follow these steps
+Follow these steps 
 
 Type **cd backend** -
 **npm install** -
 **npm run dev**
 
-Open new terminal. Follow same steps as backend
-**cd frontend** -
+Open new terminal. Follow same steps as backend type
+**cd frontend** - 
 **npm install** -
 **npm run dev**
 
