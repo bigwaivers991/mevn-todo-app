@@ -27,8 +27,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/trips', require('./routes/trips'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/contact', require('./routes/contact'));
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-// simple health check
+
 app.get('/', (req, res) => res.json({ message: 'TripTrove backend running' }));
 
 // ==== START SERVER ====
