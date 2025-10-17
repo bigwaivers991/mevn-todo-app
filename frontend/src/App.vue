@@ -6,7 +6,9 @@
     </main>
     <footer class="gradient-bg text-white py-6">
       <div class="container mx-auto px-6 text-center">
-        <div class="text-sm">&copy; {{ new Date().getFullYear() }} TaskTamer — Built with ❤️</div>
+        <p class="text-sm"> Your trusted travel planner for every journey.</p>
+        <div class="text-sm">&copy; {{ new Date().getFullYear() }} TripTrove. All rights reserved.
+</div>
       </div>
     </footer>
   </div>
