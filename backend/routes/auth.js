@@ -3,7 +3,6 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
-
 // Register
 router.post('/register', async (req, res) => {
   try {
@@ -174,4 +173,7 @@ router.put('/:id/username', async (req, res) => {
     res.status(500).json({ message: 'Failed to update username' });
   }
 });
+
+
+
 module.exports = router;
