@@ -17,7 +17,7 @@
 
       <div class="flex items-center space-x-3">
         <template v-if="!user">
-          <router-link to="/login" class="px-4 py-2 rounded-md bg-white text-primary-700">Login</router-link>
+          <router-link to="/login" class="px-4 py-2 rounded-md border border-white">Login</router-link>
           <router-link to="/register" class="px-4 py-2 rounded-md border border-white">Register</router-link>
         </template>
         <template v-else>
