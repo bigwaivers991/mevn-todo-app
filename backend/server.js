@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -27,7 +27,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/trips', require('./routes/trips'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/contact', require('./routes/contact'));
-
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 // simple health check
 app.get('/', (req, res) => res.json({ message: 'TripTrove backend running' }));
 
