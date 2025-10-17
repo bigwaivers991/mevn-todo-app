@@ -14,7 +14,7 @@
         </p>
         <div class="flex space-x-4">
           <router-link
-            to="/register"
+            to="/trips"
             class="px-6 py-3 rounded-lg bg-[#0B1132] text-white hover:bg-[#1a2270] transition"
           >
             Start Planning
